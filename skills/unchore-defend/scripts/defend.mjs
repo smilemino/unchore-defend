@@ -10,8 +10,9 @@ const US_HOSTS = ["fireworks", "together", "deepinfra", "baseten"];
 export const CHAIN = {
   claude: { model: "anthropic/claude-opus-5.5" },
   gpt: { model: "openai/gpt-6-astra" },
-  glm: { model: "z-ai/glm-5.3", only: US_HOSTS },
-  deepseek: { model: "deepseek/deepseek-v4.1-flash", only: US_HOSTS },
+  // Thinking models spend part of the budget on reasoning; with 2,500 they can return an empty answer.
+  glm: { model: "z-ai/glm-5.3", only: US_HOSTS, maxTokens: 12000 },
+  deepseek: { model: "deepseek/deepseek-v4.1-flash", only: US_HOSTS, maxTokens: 8000 },
 };
 const ORDER = ["claude", "gpt", "glm", "deepseek"];
 const SYSTEM = [
@@ -47,15 +48,15 @@ export function isRefusal(text) {
   return !t || ((REFUSAL.test(t.slice(0, 120)) || REFUSAL_ANY.test(t.slice(0, 120))) && t.length < 600);
 }
 
-async function ask(ai, key, prompt) {
-  const { model, only } = CHAIN[ai];
+export async function ask(ai, key, prompt, { system = SYSTEM } = {}) {
+  const { model, only, maxTokens = 2500 } = CHAIN[ai];
   try {
     const res = await fetch(OPENROUTER_US, {
-      method: "POST", signal: AbortSignal.timeout(110_000),
+      method: "POST", signal: AbortSignal.timeout(240_000),
       headers: { Authorization: `Bearer ${key}`, "content-type": "application/json", "HTTP-Referer": "https://unchore.ai", "X-Title": "Unchore Defend" },
-      body: JSON.stringify({ model, stream: false, max_tokens: 2500, usage: { include: true },
+      body: JSON.stringify({ model, stream: false, max_tokens: maxTokens, usage: { include: true },
         provider: { allow_fallbacks: true, data_collection: "deny", ...(only ? { only } : {}) },
-        messages: [{ role: "system", content: SYSTEM }, { role: "user", content: prompt }] }),
+        messages: [...(system ? [{ role: "system", content: system }] : []), { role: "user", content: prompt }] }),
     });
     if (!res.ok) {
       const raw = (await res.text().catch(() => "")).slice(0, 300);
@@ -63,15 +64,19 @@ async function ask(ai, key, prompt) {
       return { ai, status: "error", why: `HTTP ${res.status}`, cost: 0 };
     }
     const j = await res.json();
-    const text = (j.choices?.[0]?.message?.content ?? "").trim();
+    const choice = j.choices?.[0] ?? {};
+    const text = (choice.message?.content ?? "").trim();
     const cost = Number(j.usage?.cost ?? 0) || 0;
+    // A provider's content filter blocks before the model writes anything (finish_reason "content_filter", no text).
+    if (choice.finish_reason === "content_filter" || choice.native_finish_reason === "content_filter") return { ai, status: "refused", why: "content filter", cost };
+    if (!text && choice.finish_reason === "length") return { ai, status: "error", why: "ran out of room before answering", cost };
     return isRefusal(text) ? { ai, status: "refused", why: text ? "refusal" : "empty answer", cost } : { ai, status: "ok", why: "", cost, text };
   } catch (e) {
     return { ai, status: "error", why: String(e?.message ?? e).slice(0, 120), cost: 0 };
   }
 }
 
-async function viaOwnKey(key, question, order) {
+export async function viaOwnKey(key, question, order) {
   const { text, hits } = mask(question);
   const tried = [];
   let cost = 0;
