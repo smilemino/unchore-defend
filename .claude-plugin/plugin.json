@@ -10,6 +10,10 @@
   },
   "homepage": "https://github.com/smilemino/unchore-defend",
   "repository": "https://github.com/smilemino/unchore-defend",
+  "documentationUrl": "https://github.com/smilemino/unchore-defend#readme",
+  "supportUrl": "https://github.com/smilemino/unchore-defend/issues",
+  "privacyPolicyUrl": "https://unchore.ai/privacy",
+  "termsOfServiceUrl": "https://unchore.ai/terms",
   "license": "MIT",
   "keywords": [
     "security",
