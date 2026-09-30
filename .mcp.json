@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "unchore-defend": {
+      "command": "node",
+      "args": ["${CLAUDE_PLUGIN_ROOT}/mcp/server.mjs"],
+      "env": {
+        "UNCHORE_TOKEN": "${UNCHORE_TOKEN:-}",
+        "OPENROUTER_API_KEY": "${OPENROUTER_API_KEY:-}"
+      }
+    }
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "name": "unchore",
+  "owner": { "name": "Unchore", "email": "support@unchore.ai" },
+  "metadata": { "description": "Tools from Unchore (https://unchore.ai) — AI that does the chores." },
+  "plugins": [
+    {
+      "name": "unchore-defend",
+      "source": "./",
+      "description": "Grade a site's security headers with fixes and a badge; read logs, code or a suspicious message for the defender.",
+      "version": "0.1.0",
+      "category": "security",
+      "homepage": "https://github.com/smilemino/unchore-defend"
+    }
+  ]
+}

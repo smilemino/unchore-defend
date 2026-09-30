@@ -1,0 +1,35 @@
+{
+  "manifest_version": "0.3",
+  "name": "unchore-defend",
+  "display_name": "Unchore Defend",
+  "version": "0.1.0",
+  "description": "Grade a site's security headers with fixes and a badge; read logs, code or a suspicious message for the defender.",
+  "long_description": "Two tools for the person protecting a system. site_check grades a public website's security headers and cookie flags (A–F), gives the one-line fix for each gap and a README badge — no key needed. defend_analyze reads a log, code, config or suspicious message and says what happened, how bad it is and what to fix first; personal data and secrets are masked before sending, and if one AI refuses the next answers (Claude → GPT → GLM → DeepSeek). defend_analyze needs your OpenRouter key or an Unchore key.",
+  "author": { "name": "Unchore", "email": "support@unchore.ai", "url": "https://unchore.ai" },
+  "homepage": "https://github.com/smilemino/unchore-defend",
+  "repository": { "type": "git", "url": "https://github.com/smilemino/unchore-defend" },
+  "support": "https://github.com/smilemino/unchore-defend/issues",
+  "license": "MIT",
+  "keywords": ["security", "security-headers", "incident-response", "log-analysis", "blue-team"],
+  "server": {
+    "type": "node",
+    "entry_point": "mcp/server.mjs",
+    "mcp_config": {
+      "command": "node",
+      "args": ["${__dirname}/mcp/server.mjs"],
+      "env": {
+        "OPENROUTER_API_KEY": "${user_config.openrouter_api_key}",
+        "UNCHORE_TOKEN": "${user_config.unchore_token}"
+      }
+    }
+  },
+  "tools": [
+    { "name": "site_check", "description": "Grade a website's security headers (A–F) with fixes and a README badge." },
+    { "name": "defend_analyze", "description": "Read a log, code or suspicious message: what happened, how bad, what to fix first." }
+  ],
+  "user_config": {
+    "openrouter_api_key": { "type": "string", "title": "OpenRouter key (optional)", "description": "For defend_analyze with your own OpenRouter account. Leave empty to use an Unchore key or only the site check.", "sensitive": true, "required": false, "default": "" },
+    "unchore_token": { "type": "string", "title": "Unchore key (optional)", "description": "For defend_analyze without an AI account: unchore.ai → Settings → AI → Unchore credit → New key.", "sensitive": true, "required": false, "default": "" }
+  },
+  "compatibility": { "platforms": ["darwin", "win32", "linux"], "runtimes": { "node": ">=22.0.0" } }
+}

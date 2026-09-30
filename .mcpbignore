@@ -1,0 +1,6 @@
+.git/
+.github/
+test/
+*.mcpb
+server.json
+README.ko.md

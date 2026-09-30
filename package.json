@@ -1,0 +1,13 @@
+{
+  "name": "unchore-defend",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Security help for defenders: site security-headers grade with fixes and a badge, and log/code analysis with masking.",
+  "license": "MIT",
+  "homepage": "https://github.com/smilemino/unchore-defend",
+  "repository": { "type": "git", "url": "https://github.com/smilemino/unchore-defend.git" },
+  "mcpName": "io.github.smilemino/unchore-defend",
+  "bin": { "unchore-defend-mcp": "mcp/server.mjs", "unchore-site-check": "skills/site-check/scripts/site-check.mjs" },
+  "engines": { "node": ">=22" },
+  "scripts": { "test": "node --test test/*.test.mjs" }
+}

@@ -1,0 +1,10 @@
+{
+  "name": "unchore-defend",
+  "version": "0.1.0",
+  "description": "Security help for defenders: grade a site's security headers (with fixes and a README badge) and read logs, code or a suspicious message to find what happened and what to fix first. Personal data and secrets are masked before anything is sent.",
+  "author": { "name": "Unchore", "email": "support@unchore.ai", "url": "https://unchore.ai" },
+  "homepage": "https://github.com/smilemino/unchore-defend",
+  "repository": "https://github.com/smilemino/unchore-defend",
+  "license": "MIT",
+  "keywords": ["security", "security-headers", "incident-response", "log-analysis", "blue-team", "mcp"]
+}
