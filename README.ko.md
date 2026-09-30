@@ -27,6 +27,8 @@
 
 설치한 뒤에는 그냥 말로 부탁하면 됩니다. 예: "mysite.com 보안 헤더 점검하고 고칠 수 있는 건 고쳐 줘", "access.log 읽어 보고 공격당했는지 알려 줘"
 
+사이트 점검은 키가 필요 없습니다. Defend를 쓰려면 플러그인을 켤 때 클로드 코드가 오픈라우터 키나 언초어 키를 묻습니다(나중에 넣으려면 `/plugin configure unchore-defend@unchore`). 키는 컴퓨터의 안전한 저장소에 보관됩니다.
+
 **클로드 데스크톱:** [Releases](https://github.com/smilemino/unchore-defend/releases)에서 `unchore-defend.mcpb` 파일을 받아 열면 됩니다.
 
 **다른 MCP 도구** (커서, VS Code, 윈드서프 등): 이 저장소를 받은 뒤 설정에 아래를 넣습니다.

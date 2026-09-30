@@ -37,6 +37,8 @@ https://example.com/ → F (37/100) · HTTP 200
 
 Then just ask: *"check the security headers of mysite.com and fix what you can"* or *"read access.log — were we attacked?"*
 
+The site check needs no key. For defend, Claude Code asks for an OpenRouter or Unchore key when you enable the plugin (later: `/plugin configure unchore-defend@unchore`); it is kept in your system's secure storage.
+
 **Claude Desktop:** download `unchore-defend.mcpb` from [Releases](https://github.com/smilemino/unchore-defend/releases) and open it.
 
 **Any MCP client** (Cursor, VS Code, Windsurf, …) — clone this repo, then add:

@@ -1,10 +1,40 @@
 {
   "name": "unchore-defend",
-  "version": "0.1.0",
+  "displayName": "Unchore Defend",
+  "version": "0.1.1",
   "description": "Security help for defenders: grade a site's security headers (with fixes and a README badge) and read logs, code or a suspicious message to find what happened and what to fix first. Personal data and secrets are masked before anything is sent.",
-  "author": { "name": "Unchore", "email": "support@unchore.ai", "url": "https://unchore.ai" },
+  "author": {
+    "name": "Unchore",
+    "email": "support@unchore.ai",
+    "url": "https://unchore.ai"
+  },
   "homepage": "https://github.com/smilemino/unchore-defend",
   "repository": "https://github.com/smilemino/unchore-defend",
   "license": "MIT",
-  "keywords": ["security", "security-headers", "incident-response", "log-analysis", "blue-team", "mcp"]
+  "keywords": [
+    "security",
+    "security-headers",
+    "incident-response",
+    "log-analysis",
+    "blue-team",
+    "mcp"
+  ],
+  "userConfig": {
+    "openrouter_api_key": {
+      "type": "string",
+      "title": "OpenRouter key (optional)",
+      "description": "Only for the defend tool, with your own OpenRouter account. It is sent only to OpenRouter. Leave empty to use an Unchore key, or to use only the site check.",
+      "sensitive": true,
+      "required": false,
+      "default": ""
+    },
+    "unchore_token": {
+      "type": "string",
+      "title": "Unchore key (optional)",
+      "description": "Only for the defend tool, without an AI account: unchore.ai → Settings → AI → Unchore credit → New key. It is sent only to unchore.ai.",
+      "sensitive": true,
+      "required": false,
+      "default": ""
+    }
+  }
 }
