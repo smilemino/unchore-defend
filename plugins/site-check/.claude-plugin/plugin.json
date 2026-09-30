@@ -1,0 +1,15 @@
+{
+  "name": "unchore-site-check",
+  "displayName": "Unchore Site Check",
+  "version": "0.1.0",
+  "description": "Grade any public website's security headers and cookie flags (A–F), get the one-line fix for each gap, and a README badge. No key, no account; it sends one ordinary request to the site and nothing anywhere else.",
+  "author": { "name": "Unchore", "email": "support@unchore.ai", "url": "https://unchore.ai" },
+  "homepage": "https://github.com/smilemino/unchore-defend/tree/main/plugins/site-check",
+  "repository": "https://github.com/smilemino/unchore-defend",
+  "documentationUrl": "https://github.com/smilemino/unchore-defend/tree/main/plugins/site-check#readme",
+  "supportUrl": "https://github.com/smilemino/unchore-defend/issues",
+  "privacyPolicyUrl": "https://github.com/smilemino/unchore-defend/blob/main/PRIVACY.md",
+  "termsOfServiceUrl": "https://unchore.ai/terms",
+  "license": "MIT",
+  "keywords": ["security", "security-headers", "csp", "hsts", "web", "badge"]
+}

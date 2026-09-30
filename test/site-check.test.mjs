@@ -50,3 +50,9 @@ test("badge states what was measured and links back", () => {
   assert.match(b, /unchore\.ai\/tools\/site-check\?utm_source=badge/);
   assert.match(report(r), /checks response headers only/);
 });
+
+test("the site-check-only plugin carries the same script", async () => {
+  const { readFileSync } = await import("node:fs");
+  const u = (p) => readFileSync(new URL(p, import.meta.url), "utf8");
+  assert.equal(u("../plugins/site-check/skills/site-check/scripts/site-check.mjs"), u("../skills/site-check/scripts/site-check.mjs"));
+});

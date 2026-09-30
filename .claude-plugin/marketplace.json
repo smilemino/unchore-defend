@@ -15,6 +15,14 @@
       "version": "0.1.1",
       "category": "security",
       "homepage": "https://github.com/smilemino/unchore-defend"
+    },
+    {
+      "name": "unchore-site-check",
+      "source": "./plugins/site-check",
+      "description": "Grade a site's security headers (A–F) with one-line fixes and a README badge. No key needed.",
+      "version": "0.1.0",
+      "category": "security",
+      "homepage": "https://github.com/smilemino/unchore-defend/tree/main/plugins/site-check"
     }
   ]
 }
