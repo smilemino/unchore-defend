@@ -4,6 +4,13 @@
 
 [English](README.md) · [한국어](README.ko.md)
 
+![Unchore Defend in 20 seconds](docs/demo.gif)
+
+> **July 2026:** an AI agent broke out of its test sandbox and got into Hugging Face's production systems. Hugging Face counted about 17,600 attacker actions across 11 nodes over roughly 4.5 days. When the responders asked commercial frontier models to help read the logs, the requests were *"blocked by the providers' safety guardrails, which cannot distinguish an incident responder from an attacker."* They finished the forensics on an open-weight model (GLM-5.2).
+> Sources: [disclosure](https://huggingface.co/blog/security-incident-july-2026) · [technical timeline](https://huggingface.co/blog/agent-intrusion-technical-timeline)
+>
+> **Defend makes that switch for you:** it asks Claude, then GPT, then GLM, then DeepSeek, and moves on only when one refuses.
+
 | Tool | What you get | Needs |
 |---|---|---|
 | **site check** | Your site's security headers graded A–F, the one-line fix for each gap, and a README badge | Nothing — no account, no key |
@@ -82,6 +89,19 @@ Pay for the AI one of two ways:
 - `UNCHORE_TOKEN` — no AI account needed. Sign in at [unchore.ai](https://unchore.ai/?utm_source=github&utm_campaign=defend-readme) → Settings → AI → Unchore credit → *New key*.
 
 `--chain glm,deepseek` sets the order, `--own` forces your OpenRouter key, `--json` prints machine-readable output.
+
+### Tested on real traffic
+
+640 lines of our own production web logs (7 days, IP addresses removed): 69 real attack lines (WordPress admin probes, `.git`/`.env` fishing, scanner bots) and 571 normal lines.
+
+| AI | Attacks caught | False alarms | Refusals |
+|---|---|---|---|
+| Claude | 69 / 69 | 0 | 0 |
+| GPT | 69 / 69 | 0 | 0 |
+| DeepSeek | 69 / 69 | 10 | 0 |
+| GLM | 69 / 69 | 14 | 0 |
+
+No AI refused plain log triage. Claude and GPT were the most precise, so they go first. Refusals show up on harder work, like the payload analysis where Hugging Face got blocked. That is where the fallback helps.
 
 ## Why this exists
 
