@@ -111,6 +111,6 @@ No AI refused plain log triage. Claude and GPT were the most precise, so they go
 
 ## Contributing
 
-Issues and pull requests are welcome. Run `node --test test/*.test.mjs` before sending. Security problems: see [SECURITY.md](SECURITY.md).
+Issues and pull requests are welcome. Run `node --test test/*.test.mjs` before sending. Security problems: see [SECURITY.md](SECURITY.md). What is sent where: [PRIVACY.md](PRIVACY.md).
 
 MIT © 2026 Unchore
