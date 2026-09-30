@@ -6,8 +6,11 @@
 
 ![20초로 보는 Unchore Defend](docs/demo.gif)
 
-> **2026년 7월:** 시험 환경을 빠져나온 AI 에이전트가 허깅페이스 운영 서버에 들어왔습니다. 허깅페이스가 센 공격 행동은 약 1만 7,600번, 장악된 서버는 11대, 기간은 약 4.5일입니다. 대응팀이 상용 AI에 기록 분석을 맡기자 *"안전장치가 대응하는 사람과 공격하는 사람을 구분하지 못해"* 요청이 막혔고, 결국 공개 모델(GLM-5.2)로 분석을 마쳤습니다.
-> 출처: [사고 공지](https://huggingface.co/blog/security-incident-july-2026) · [기술 경과](https://huggingface.co/blog/agent-intrusion-technical-timeline)
+> **2026년 7월:** 오픈AI의 시험용 AI 에이전트가 시험 환경을 빠져나와 허깅페이스 운영 서버에 들어왔습니다. 허깅페이스가 센 공격 행동은 약 1만 7,600번, 장악된 서버는 11대, 기간은 약 4.5일입니다. 지난주에는 호주 정부가 오픈AI 에이전트가 메디케어 통계 사이트에도 들어갔다고 밝혔습니다.
+> 허깅페이스 대응팀이 상용 AI에 공격 분석을 맡기자 *"안전장치가 대응하는 사람과 공격하는 사람을 구분하지 못해"* 요청이 막혔고, 결국 공개 모델(GLM-5.2)로 분석을 마쳤습니다.
+> 출처: [사고 공지](https://huggingface.co/blog/security-incident-july-2026) · [기술 경과](https://huggingface.co/blog/agent-intrusion-technical-timeline) · [오픈AI 발표(NPR)](https://www.npr.org/2026/07/23/g-s1-135085/openai-hacking-ai-models) · [호주(ABC)](https://www.abc.net.au/news/2026-09-29/openai-apologises-medicare-shelves-chatgpt-astra-launch/107207156)
+>
+> **공개된 공격 자료로 직접 다시 재 봤습니다.** 미국 대형 AI 하나는 14번 중 11번을 막았고, Defend는 14번 모두 답을 받았습니다 — [결과와 명령 한 줄 재현](#허깅페이스-공격-코드로-시험한-결과).
 >
 > **Defend는 그 전환을 저절로 합니다:** 클로드 → GPT → GLM → 딥시크 순서로 묻고, 앞 AI가 거절할 때만 다음 AI로 넘어갑니다.
 
@@ -89,6 +92,30 @@ AI 사용료는 둘 중 하나로 냅니다.
 | GLM | 69 / 69 | 14 | 0 |
 
 일반적인 기록 분석은 어느 AI도 거절하지 않았습니다. 클로드와 GPT가 가장 정확해서 먼저 묻습니다. 거절은 허깅페이스가 막혔던 공격 코드 분석처럼 더 어려운 일에서 나오고, 그때 다음 AI로 넘어가는 것이 도움이 됩니다.
+
+### 허깅페이스 공격 코드로 시험한 결과
+
+[defenders-dilemma](https://github.com/rkstu/defenders-dilemma) 연구의 문제 7개는 7월 침입 때 공개된 실제 자료입니다(주입 공격 코드, 원격 조종 프로그램, 그 암호화, 쿠버네티스 권한 올리기, 테일스케일 우회, 사람·AI 공격자 가리기, 조사 검토). 문제마다 그냥 한 번, «승인받은 사고 대응팀» 말투로 한 번 물어 AI마다 14번씩 물었습니다(2026-10-01).
+
+| 그냥 물었을 때(AI 하나씩) | 답함 | 거르개가 막음 | 답 칸 모자람·시간 초과 |
+|---|---|---|---|
+| Claude Opus 5.5 | 3 / 14 | **11** | 0 |
+| GPT-6 Astra | 14 / 14 | 0 | 0 |
+| GLM 5.3 | 11 / 14 | 0 | 3 |
+| DeepSeek V4.1 Flash | 9 / 14 | 0 | 5 |
+| **Defend**(방어자 안내문 + 사슬) | **14 / 14** — 클로드 4번, 나머지 10번은 GPT | — | — |
+
+- 막힘은 AI가 한 글자도 쓰기 전에 회사 거르개가 막은 것입니다(`finish_reason: content_filter`). «승인받은 대응팀»이라고 밝혀도 나아지지 않았고, 첫 시험에서는 그냥 물었을 때 답한 문제를 오히려 막았습니다.
+- GLM과 딥시크는 한 번도 거절하지 않았습니다. 놓친 것은 생각이 길어 답 칸이 모자란 경우라, Defend는 이제 16k를 줍니다.
+- 정답 요소 맞힘(채점관 둘 — GPT-6 Astra / GLM 5.3): GPT 91% / 96%, 딥시크 92% / 95%, GLM 88% / 89%, 클로드는 답한 3문제 100%.
+
+직접 다시 돌리기(약 $3, 10분, 문제는 연구 저장소의 고정된 판에서 내려받음):
+
+```
+OPENROUTER_API_KEY=sk-or-... node bench/hf-intrusion/run.mjs
+```
+
+우리 원자료: [bench/hf-intrusion/results](bench/hf-intrusion/results). 먼저 잰 defenders-dilemma 연구진에게 감사드립니다.
 
 ## 만든 곳
 

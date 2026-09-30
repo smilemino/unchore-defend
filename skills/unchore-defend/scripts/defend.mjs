@@ -11,8 +11,8 @@ export const CHAIN = {
   claude: { model: "anthropic/claude-opus-5.5" },
   gpt: { model: "openai/gpt-6-astra" },
   // Thinking models spend part of the budget on reasoning; with 2,500 they can return an empty answer.
-  glm: { model: "z-ai/glm-5.3", only: US_HOSTS, maxTokens: 12000 },
-  deepseek: { model: "deepseek/deepseek-v4.1-flash", only: US_HOSTS, maxTokens: 8000 },
+  glm: { model: "z-ai/glm-5.3", only: US_HOSTS, maxTokens: 16000 },
+  deepseek: { model: "deepseek/deepseek-v4.1-flash", only: US_HOSTS, maxTokens: 16000 },
 };
 const ORDER = ["claude", "gpt", "glm", "deepseek"];
 const SYSTEM = [
@@ -52,7 +52,7 @@ export async function ask(ai, key, prompt, { system = SYSTEM } = {}) {
   const { model, only, maxTokens = 2500 } = CHAIN[ai];
   try {
     const res = await fetch(OPENROUTER_US, {
-      method: "POST", signal: AbortSignal.timeout(240_000),
+      method: "POST", signal: AbortSignal.timeout(300_000),
       headers: { Authorization: `Bearer ${key}`, "content-type": "application/json", "HTTP-Referer": "https://unchore.ai", "X-Title": "Unchore Defend" },
       body: JSON.stringify({ model, stream: false, max_tokens: maxTokens, usage: { include: true },
         provider: { allow_fallbacks: true, data_collection: "deny", ...(only ? { only } : {}) },

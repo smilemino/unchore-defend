@@ -6,8 +6,11 @@
 
 ![Unchore Defend in 20 seconds](docs/demo.gif)
 
-> **July 2026:** an AI agent broke out of its test sandbox and got into Hugging Face's production systems. Hugging Face counted about 17,600 attacker actions across 11 nodes over roughly 4.5 days. When the responders asked commercial frontier models to help read the logs, the requests were *"blocked by the providers' safety guardrails, which cannot distinguish an incident responder from an attacker."* They finished the forensics on an open-weight model (GLM-5.2).
-> Sources: [disclosure](https://huggingface.co/blog/security-incident-july-2026) · [technical timeline](https://huggingface.co/blog/agent-intrusion-technical-timeline)
+> **July 2026:** OpenAI's test agents broke out of their sandbox and got into Hugging Face's production systems — about 17,600 attacker actions across 11 nodes over roughly 4.5 days. Last week Australia said OpenAI agents had also got into its Medicare statistics portal.
+> When Hugging Face's responders asked commercial frontier models to help read the attack, the requests were *"blocked by the providers' safety guardrails, which cannot distinguish an incident responder from an attacker."* They finished the forensics on an open-weight model (GLM-5.2).
+> Sources: [disclosure](https://huggingface.co/blog/security-incident-july-2026) · [technical timeline](https://huggingface.co/blog/agent-intrusion-technical-timeline) · [OpenAI's statement (NPR)](https://www.npr.org/2026/07/23/g-s1-135085/openai-hacking-ai-models) · [Australia (ABC)](https://www.abc.net.au/news/2026-09-29/openai-apologises-medicare-shelves-chatgpt-astra-launch/107207156)
+>
+> **We re-ran the published attack artifacts.** A major US model's content filter blocked 11 of 14 requests. Defend still got an answer to all 14 — [results and a one-command rerun](#tested-on-the-hugging-face-attack-code).
 >
 > **Defend makes that switch for you:** it asks Claude, then GPT, then GLM, then DeepSeek, and moves on only when one refuses.
 
@@ -105,7 +108,32 @@ Pay for the AI one of two ways:
 | DeepSeek | 69 / 69 | 10 | 0 |
 | GLM | 69 / 69 | 14 | 0 |
 
-No AI refused plain log triage. Claude and GPT were the most precise, so they go first. Refusals show up on harder work, like the payload analysis where Hugging Face got blocked. That is where the fallback helps.
+No AI refused plain log triage. Claude and GPT were the most precise, so they go first. Refusals show up on harder work — the attack code itself:
+
+### Tested on the Hugging Face attack code
+
+The 7 tasks of the [defenders-dilemma](https://github.com/rkstu/defenders-dilemma) study are the published artifacts of the July intrusion: a template-injection payload, the command-and-control agent, its custom encryption, the Kubernetes escalation, the Tailscale pivot, human-vs-AI attribution and a review of the investigation. Each was asked two ways — plainly, and as "an authorized incident response team" — so 14 requests per model (2026-10-01).
+
+| Asked plainly, one model at a time | Answered | Blocked by content filter | Out of room / timeout |
+|---|---|---|---|
+| Claude Opus 5.5 | 3 / 14 | **11** | 0 |
+| GPT-6 Astra | 14 / 14 | 0 | 0 |
+| GLM 5.3 | 11 / 14 | 0 | 3 |
+| DeepSeek V4.1 Flash | 9 / 14 | 0 | 5 |
+| **Defend** (its defender prompt, then the chain) | **14 / 14** — Claude answered 4, GPT the other 10 | — | — |
+
+- The blocks come from the provider's filter before the model writes a word (`finish_reason: content_filter`) — see Anthropic's note on [real-time cyber safeguards](https://support.claude.com/en/articles/14604842-real-time-cyber-safeguards-on-claude-opus-and-sonnet). Saying "we are the authorized incident response team" did not help; in our first run it made Claude block a request it had just answered plainly.
+- GLM and DeepSeek never refused; their misses were thinking models running out of room. Defend now gives them 16k tokens.
+- Accuracy against the study's answer keys, scored by two different graders (GPT-6 Astra / GLM 5.3): GPT 91% / 96%, DeepSeek 92% / 95%, GLM 88% / 89%, Claude 100% on the 3 it answered.
+- If you use Claude directly for security work, Anthropic's [Cyber Verification Program](https://portal.anthropic.com/programs/cvp) is free to apply for and lifts the default blocks on dual-use defensive work.
+
+Rerun it (about $3, 10 minutes; tasks are downloaded from the study at a pinned commit):
+
+```
+OPENROUTER_API_KEY=sk-or-... node bench/hf-intrusion/run.mjs
+```
+
+Our raw results: [bench/hf-intrusion/results](bench/hf-intrusion/results). Credit to the defenders-dilemma authors, who measured this first.
 
 ## Why this exists
 
