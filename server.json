@@ -1,0 +1,21 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.smilemino/unchore-defend",
+  "title": "Unchore Defend",
+  "description": "Grade a site's security headers with fixes and a badge; read logs or code for the defender.",
+  "version": "0.1.0",
+  "websiteUrl": "https://github.com/smilemino/unchore-defend",
+  "repository": { "url": "https://github.com/smilemino/unchore-defend", "source": "github" },
+  "packages": [
+    {
+      "registryType": "mcpb",
+      "identifier": "https://github.com/smilemino/unchore-defend/releases/download/v0.1.0/unchore-defend.mcpb",
+      "fileSha256": "302a753ed7471077bbf76cfbda6806d01ad1ffd2f97f49deab664bed02664785",
+      "transport": { "type": "stdio" },
+      "environmentVariables": [
+        { "name": "OPENROUTER_API_KEY", "description": "Your OpenRouter key, for defend_analyze (optional)", "isSecret": true, "isRequired": false },
+        { "name": "UNCHORE_TOKEN", "description": "An Unchore key instead of an AI account, for defend_analyze (optional)", "isSecret": true, "isRequired": false }
+      ]
+    }
+  ]
+}
