@@ -4,6 +4,8 @@
 
 [English](README.md) · [한국어](README.ko.md)
 
+**[Unchore](https://github.com/smilemino/unchore-ai)**(두 번 묻는 일은 알아서 자동화해 주는 오픈소스 개인 AI)의 보안 도구입니다.
+
 ![20초로 보는 Unchore Defend](docs/demo.gif)
 
 > **2026년 7월:** 오픈AI의 시험용 AI 에이전트가 시험 환경을 빠져나와 허깅페이스 운영 서버에 들어왔습니다. 허깅페이스가 센 공격 행동은 약 1만 7,600번, 장악된 서버는 11대, 기간은 약 4.5일입니다. 지난주에는 호주 정부가 오픈AI 에이전트가 메디케어 통계 사이트에도 들어갔다고 밝혔습니다.

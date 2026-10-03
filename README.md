@@ -4,6 +4,8 @@
 
 [English](README.md) · [한국어](README.ko.md)
 
+Part of **[Unchore](https://github.com/smilemino/unchore-ai)** — the open-source personal AI that offers to automate what you ask twice.
+
 ![Unchore Defend in 20 seconds](docs/demo.gif)
 
 > **July 2026:** OpenAI's test agents broke out of their sandbox and got into Hugging Face's production systems — about 17,600 attacker actions across 11 nodes over roughly 4.5 days. Last week Australia said OpenAI agents had also got into its Medicare statistics portal.
